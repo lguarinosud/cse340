@@ -79,7 +79,7 @@ nav li:active  {
   
 }
 
-.cta h2 {
+.cta h1 {
   color: #FFD700;
   margin: 0px;
   font-size: 20px;
@@ -104,6 +104,10 @@ nav li:active  {
   padding: 10px;
   text-align: center;
   background-color: var(--primary-blue);
+}
+
+.upgrade-item a {
+  color:azure;
 }
 
 
