@@ -1,0 +1,85 @@
+@media screen and (min-width: 800px) {
+
+    .cta {
+        position: absolute;
+        top: 150px;
+        left: auto;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .herolabel {
+        font-size: x-large;
+    }
+
+    .cta h2 {
+        font-size: 30px;
+    }
+
+    
+    .hero {
+        max-width: 1000px;
+    }
+    
+    .card {
+        display: grid;  
+        grid-template-columns: 40fr 60fr;  
+        grid-auto-rows: auto;  
+        gap: 10px;
+        margin-top: 40px;
+        margin: auto;
+        margin-top: 40px;
+      }
+
+      .upgrades-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; /* Center items horizontally */
+        text-align: center; /* Center text within items */
+      }
+
+      .upgrades-container h2 {
+        margin: 0px;
+      }
+
+      .upgrades {
+        left: auto;
+        right: auto;
+        width: 100%;
+      }
+
+      .upgrade-item {
+        width: 100%;
+      }
+
+      .reviews {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; /* Center items horizontally */
+        text-align: center; /* Center text within items */
+      }
+      
+      .reviews h2 {
+        margin: 0;  
+      }
+      
+      .reviews ul {
+        padding: 0;  
+        list-style-type: none;  
+      }
+
+      .reviews ul li {
+        margin-bottom: 10px; 
+      }
+      
+
+    
+
+    
+
+
+
+}
