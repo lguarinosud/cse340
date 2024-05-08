@@ -42,6 +42,10 @@ nav li {
   text-align: center;  
 }
 
+nav a {
+  color: azure;
+}
+
 nav li:hover,
 nav li:active  {
   border: 5px solid var(--primary-blue);  
@@ -122,6 +126,24 @@ nav li:active  {
   text-align: center;
 }
 
+#inv-display{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 20px;
+  padding: 0;
+}
+
+#inv-display li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid blue;
+}
+.namePrice {
+  text-align: center;
+  font-size: larger;
+  
+}
 
 
 
