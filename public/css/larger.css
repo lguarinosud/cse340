@@ -74,22 +74,49 @@
       .reviews ul li {
         margin-bottom: 10px; 
       }
+
       #inv-display{
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        grid-gap: 20px;
+        grid-gap: 2px;
         padding: 0;
       }
-      
+
       #inv-display li {
         display: flex;
         flex-direction: column;
         align-items: center;
         border: 2px solid blue;
       }
+
       .namePrice {
         text-align: center;
         font-size: larger;
         
       }
+
+      .cardDetail {
+        display: grid;
+        grid-template-columns: 3fr auto 2fr; 
+        padding: 0;
+        align-items: start;
+      }
+
+      .cardDetail > * {
+        grid-column: span 1;  
+      }
+
+      /* .card-body {
+        margin-left: 60px;
+        margin-right: 60px;
+      } */
+
+      .card-img-top {
+        width: 500px;
+        margin-top: 0px;
+      }
+      
+
+
+
 }

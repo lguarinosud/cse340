@@ -3,6 +3,7 @@ const utilities = require("../utilities/")
 
 const invCont = {}
 
+
 /* ***************************
  *  Build inventory by classification view
  * ************************** */
@@ -19,4 +20,24 @@ invCont.buildByClassificationId = async function (req, res, next) {
   })
 }
 
+/* ***************************
+ *  Build inventory by inventory id view
+ * ************************** */
+invCont.buildByInventoryId = async function (req, res, next) {
+  console.log("req.params.inventoryId: ",req.params.inventoryId )
+  const inv_id = req.params.inventoryId
+  console.log("inv_log: ", inv_id)
+  const vehicle = await invModel.getInventoryByInventoryId(inv_id)
+  console.log("DEBUG=Vehicule: ",vehicle )
+  const card = await utilities.buildInventoryCard(vehicle)
+  let nav = await utilities.getNav()
+  const carMake = vehicle.inv_make
+  const carModel = vehicle.inv_model
+  res.render("./inventory/cards", {
+    title: carMake +" " + carModel,
+    nav,
+    card,
+  })
+}
 module.exports = invCont
+

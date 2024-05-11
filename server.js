@@ -28,9 +28,17 @@ app.use(static)
 
 // Index Route
 app.get("/", utilities.handleErrors(baseController.buildHome))
+// Inventory Card Route
+//app.get("/inv/detail/:env_id", utilities.handleErrors(invController.buildByInventoryId));
+
+// Classification Grid Route
+//app.get("/inv/type/:classification_id", utilities.handleErrors(invController.buildByClassificationId));
+
 
 // Inventory routes
 app.use("/inv", inventoryRoute)
+//app.get("/", utilities.handleErrors(invController.buildByClassificationId))
+//app.get("/detail", utilities.handleErrors(invController.buildByInventoryId))
 
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
@@ -44,11 +52,13 @@ app.use(async (req, res, next) => {
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav()
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
+  console.error("error : " + err.status)
   if(err.status == 404){ message = err.message} else {message = 'Oh no! There was a crash. Maybe try a different route?'}
+  const msj = await utilities.buildErrorMessage(message)
   res.render("errors/error", {
     title: err.status || 'Server Error',
-    message,
-    nav
+    nav,
+    msj
   })
 })
 /* ***********************
