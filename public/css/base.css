@@ -7,18 +7,25 @@
 }
 
 html, body {
-  
+  height: auto;
   margin: 0;
   padding: 0;
 }
 
-
+main {
+  height: 100vh;
+}
 
 header {
   display: flex;
   align-items: center;  
   justify-content: space-between;
   color: var(--font-color);
+  margin: 20px;
+}
+
+#tools a {
+  margin-right: 20px;
 }
 
 #wrapper {
@@ -32,6 +39,7 @@ header {
 
 .siteName {
   font-size: 30px;
+  margin-right: 20px;
 }
 
 nav {
