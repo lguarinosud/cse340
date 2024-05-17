@@ -105,6 +105,59 @@ Util.buildErrorMessage = async function(message) {
   return ErrorMessage;
 };
 
+/* **************************************
+* Build the Account Login view view HTML
+* ************************************ */
+Util.buildLogin = async function() {
+   let login = '';
+  
+    login += '<form action="/login" method="POST" class="login-form">';
+    login += '<label for="email">Email:</label>';
+    login += '<input type="email" id="account_email" name="email" required>';
+    //login += '<p class="error-text">' + message + '</p>';
+    login += '<label for="password">Password:</label>';
+    login += '<input type="password" id="account_password" name="password" required>';
+    login += '<button type="submit">Login</button>';
+    login += '</form>';
+    login += '<p>Don\'t have an account? <a href="/account/register">Register here</a></p>'
+    
+  return login;
+};
+
+/* **************************************
+* Build the Account Registration view HTML
+* ************************************ */
+
+Util.buildRegistration = async function(msj){
+  let registrationHTML = '';
+  if (msj && msj !== 'undefined' && flash.length > 0){
+    registrationHTML += '<%- messages() %>'
+    }
+  
+  registrationHTML += '<form action="account/register" method="POST" class="registration-form">';
+  registrationHTML += '<div>';
+  registrationHTML += '<label for="account_firstname">First Name:</label>';
+  registrationHTML += '<input type="text" id="account_firstname" name="account_firstname" required>';
+  registrationHTML += '</div>';
+  registrationHTML += '<div>';
+  registrationHTML += '<label for="account_lastname">Last Name:</label>';
+  registrationHTML += '<input type="text" id="account_lastname" name="account_lastname" required>';
+  registrationHTML += '</div>';
+  registrationHTML += '<div>';
+  registrationHTML += '<label for="account_email">Email:</label>';
+  registrationHTML += '<input type="email" id="account_email" name="account_email" required>';
+  registrationHTML += '</div>';
+  registrationHTML += '<div>';
+  registrationHTML += '<label for="password">Password:</label>';
+  registrationHTML += '<input type="password" id="account_password" name="account_password" required pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{12,})">';
+  registrationHTML += '<small>Password must be at least 12 characters long and contain at least 1 uppercase letter, 1 number, and 1 special character.</small>';
+  registrationHTML += '</div>';
+  registrationHTML += '<button type="submit">Register</button>';
+  registrationHTML += '</form>';
+
+  return registrationHTML;
+}
+
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 
