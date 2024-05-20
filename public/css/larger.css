@@ -116,7 +116,11 @@
         margin-top: 0px;
       }
       
-
+      .inv-management a {
+        width: 50%;
+        margin: auto;
+        
+      }
 
 
 }
