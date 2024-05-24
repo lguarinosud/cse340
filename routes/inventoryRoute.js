@@ -50,4 +50,11 @@ invValidate.newvehicleRules(),
 invValidate.checkUpdateData,
 utilities.handleErrors(invController.updateInventory));
 
+// Route to Delete Inventory view
+router.get("/delete/:inv_id", utilities.handleErrors(invController.deleteInventoryView));
+
+// Route to Delete a vehicle 
+router.post("/delete/", utilities.handleErrors(invController.deleteInventory));
+
+
 module.exports = router;

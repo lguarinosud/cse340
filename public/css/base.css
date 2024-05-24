@@ -418,7 +418,8 @@ inv-management {
 /* Add vehicles view */
 
 .add-vehicle-form,
-.edit-vehicle-form {
+.edit-vehicle-form,
+.delete-vehicle-form {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
@@ -429,14 +430,16 @@ inv-management {
 }
 
 .add-vehicle-form .form-group,
-.edit-vehicle-form .form-group {
+.edit-vehicle-form .form-group,
+.delete-vehicle-form .form-group {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
 }
 
 .add-vehicle-form label,
-.edit-vehicle-form label {
+.edit-vehicle-form label,
+.delete-vehicle-form label {
   flex: 1;
   margin-right: 10px;
   font-weight: bold;
@@ -446,7 +449,9 @@ inv-management {
 .add-vehicle-form input,
 .add-vehicle-form select,
 .edit-vehicle-form input,
-.edit-vehicle-form input {
+.edit-vehicle-form input,
+.delete-vehicle-form input,
+.delete-vehicle-form select {
   flex: 2;
   padding: 10px;
   border: 1px solid #ccc;
@@ -456,12 +461,15 @@ inv-management {
 .add-vehicle-form input:focus,
 .add-vehicle-form select:focus,
 .edit-vehicle-form input:focus,
-.edit-vehicle-form select:focus {
+.edit-vehicle-form select:focus,
+.delete-vehicle-form input:focus,
+.delete-vehicle-form select:focus {
   border-color: #007bff;
 }
 
 .add-vehicle-form button,
-.edit-vehicle-form button {
+.edit-vehicle-form button,
+.delete-vehicle-form button {
   width: 100%;
   padding: 10px;
   background-color: #007bff;
@@ -472,8 +480,23 @@ inv-management {
   cursor: pointer;
 }
 
+.delete-vehicle-form p {
+  text-align: center;
+}
+
+.delete-vehicle-form .deletion-note {
+  font-weight: bold;
+  color: red;
+  background-color: yellow;
+  padding: 10px;
+  border: 2px solid red;
+  border-radius: 5px;
+}
+
+
 .add-vehicle-form button:hover,
-.edit-vehicle-form button:hover {
+.edit-vehicle-form button:hover
+.delete-vehicle-form button:hover {
   background-color: #0056b3;
 }
 

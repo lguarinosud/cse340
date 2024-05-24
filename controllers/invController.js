@@ -230,7 +230,7 @@ invCont.editInventoryView = async function (req, res, next) {
 }
 
 /* ****************************************
-*  Register new Vehicle
+*  Update new Vehicle
 * *************************************** */
 invCont.updateInventory = async function (req, res) {
   let nav = await utilities.getNav()
@@ -292,7 +292,84 @@ invCont.updateInventory = async function (req, res) {
     })
   }
 }
+
+
+/* ***************************
+ *  Build delete inventory view
+ * ************************** */
+invCont.deleteInventoryView = async function (req, res, next) {
   
+  const inv_id = parseInt(req.params.inv_id)
+  console.log("inv_id:", inv_id)
+  let nav = await utilities.getNav()
+  const itemData = await invModel.getInventoryByInventoryId(inv_id)
+  console.log("item_data:", itemData)
+  
+
+  if (itemData) {
+    // req.flash create the message which then can be rendered using message() in the view
+    const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+    console.log("delete succesfull")
+    res.render("./inventory/delete-confirm", {
+      title: "Delete " + itemName,
+      nav,
+      errors: null,
+      inv_id: itemData.inv_id,
+      inv_make: itemData.inv_make,
+      inv_model: itemData.inv_model,
+      inv_year: itemData.inv_year,
+      inv_price: itemData.inv_price,
+    })
+  
+  } else {
+    console.log("The delete failed. inv_id:", inv_id)
+    req.flash("notice", "The vehicle does not exits")
+    res.redirect("/inv/inv-management")
+  }
+}
+
+//   res.render("./inventory/delete-confirm", {
+//     title: "Delete " + itemName,
+//     nav,
+//     errors: null,
+//     inv_id: itemData.inv_id,
+//     inv_make: itemData.inv_make,
+//     inv_model: itemData.inv_model,
+//     inv_year: itemData.inv_year,
+//     inv_price: itemData.inv_price,
+//   })
+// }
+
+/* ****************************************
+*  Delete a Vehicle
+* *************************************** */
+
+invCont.deleteInventory = async function (req, res) {
+  console.log("parameters received: ", req.body)
+  const inv_id = parseInt(req.body.inv_id)
+  console.log("Inventory id:", inv_id)
+  const inv_make = req.body.inv_make
+  const inv_model = req.body.inv_model
+  const itemName = inv_make + " " + inv_model
+  
+  console.log("id, make and model:", inv_id, inv_make, inv_model)
+  const deleteResult = await invModel.deleteInventory(inv_id)
+  
+  
+
+  if (deleteResult) {
+    // req.flash create the message which then can be rendered using message() in the view
+    console.log("delete succesfull")
+    console.log("deleteResult:", deleteResult)
+    req.flash("notice", `The ${itemName} was successfully deleted.`)
+    res.redirect("/inv/inv-management")
+  } else {
+    console.log("The delete failed. inv_id:", inv_id)
+    req.flash("notice", `The ${itemName} delete failed`)
+    res.redirect(`/inv/delete/${inv_id}`)
+  }
+}
+
 
 module.exports = invCont
 
