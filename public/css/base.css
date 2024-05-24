@@ -417,7 +417,8 @@ inv-management {
 
 /* Add vehicles view */
 
-.add-vehicle-form {
+.add-vehicle-form,
+.edit-vehicle-form {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
@@ -427,13 +428,15 @@ inv-management {
   background-color: #f9f9f9;
 }
 
-.add-vehicle-form .form-group {
+.add-vehicle-form .form-group,
+.edit-vehicle-form .form-group {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
 }
 
-.add-vehicle-form label {
+.add-vehicle-form label,
+.edit-vehicle-form label {
   flex: 1;
   margin-right: 10px;
   font-weight: bold;
@@ -441,7 +444,9 @@ inv-management {
 }
 
 .add-vehicle-form input,
-.add-vehicle-form select {
+.add-vehicle-form select,
+.edit-vehicle-form input,
+.edit-vehicle-form input {
   flex: 2;
   padding: 10px;
   border: 1px solid #ccc;
@@ -449,11 +454,14 @@ inv-management {
 }
 
 .add-vehicle-form input:focus,
-.add-vehicle-form select:focus {
+.add-vehicle-form select:focus,
+.edit-vehicle-form input:focus,
+.edit-vehicle-form select:focus {
   border-color: #007bff;
 }
 
-.add-vehicle-form button {
+.add-vehicle-form button,
+.edit-vehicle-form button {
   width: 100%;
   padding: 10px;
   background-color: #007bff;
@@ -464,7 +472,8 @@ inv-management {
   cursor: pointer;
 }
 
-.add-vehicle-form button:hover {
+.add-vehicle-form button:hover,
+.edit-vehicle-form button:hover {
   background-color: #0056b3;
 }
 

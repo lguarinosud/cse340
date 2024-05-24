@@ -1,6 +1,9 @@
 const utilities = require("../utilities/"); // Import the utilities module
 const accountModel = require("../models/account-model")
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken");
+const { request } = require("express");
+require("dotenv").config()
 
 
 //const accountCont = {}
@@ -26,40 +29,83 @@ async function buildLogin(req, res, next) {
   })
 }
 
-/* ****************************************
-*  Process Login
-* *************************************** */
-async function processLogin(req, res) {
-  console.log("ProcessLogin started")
-  let nav = await utilities.getNav()
-  const {account_email, account_password } = req.body
-  console.log("request: ", req.body)
-  const userValidated = await accountModel.checkUser(
-    account_email,
-    account_password
-  )
-   console.log("user: ", userValidated)
-  if (userValidated == true) {   
-    req.flash(
-      "notice",
-      `Congratulations, you\'re log in.`
-    )
-    res.status(201).render("index", {
-      title: "Home",
-      nav,
+// /* ****************************************
+// *  Process Login
+// * *************************************** */
+// async function processLogin(req, res) {
+//   console.log("ProcessLogin started")
+//   let nav = await utilities.getNav()
+//   const {account_email, account_password } = req.body
+//   console.log("request: ", req.body)
+//   const userValidated = await accountModel.checkUser(
+//     account_email,
+//     account_password
+//   )
+//    console.log("user: ", userValidated)
+//   if (userValidated == true) {   
+//     req.flash(
+//       "notice",
+//       `Congratulations, you\'re log in with this account ${account_email}`
+//     )
+//     res.status(201).render("index", {
+//       title: "Home",
+//       nav,
       
-       //No need to pass errors: null as the home page is not displaying errors and also this section is returing 201s
-    })
-  } else {
-    req.flash("notice", "Username or PASSWORD incorrect, please try again.")
-    res.status(501).render("./account/login", {
+//        //No need to pass errors: null as the home page is not displaying errors and also this section is returing 201s
+//     })
+//   } else {
+//     req.flash("notice", "Username or PASSWORD incorrect, please try again.")
+//     res.status(501).render("./account/login", {
+//       title: "Login",
+//       nav,
+//       errors: null,
+//     })
+//   }
+// }
+/* ****************************************
+ *  Process login request
+ * ************************************ */
+async function processLogin(req, res) {
+  let nav = await utilities.getNav()
+  const { account_email, account_password } = req.body
+  console.log("request:", req.body)
+  const accountData = await accountModel.getAccountByEmail(account_email)
+  console.log("accountData:", accountData)
+  if (!accountData) {
+   req.flash("notice", "Please check your credentials and try again.")
+   res.status(400).render("./account/login", {
+    title: "Login",
+    nav,
+    errors: null,
+    account_email,
+   })
+  return
+  }
+  try {
+   if (await bcrypt.compare(account_password, accountData.account_password)) {
+   delete accountData.account_password
+   const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 })
+   req.flash("notice", "You're logged in")
+   if(process.env.NODE_ENV === 'development') {
+     res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+     } else {
+       res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
+     }
+   return res.redirect("/account/")
+   } else {
+    req.flash("notice", "Please check your credentials and try again.");
+    return res.status(400).render("./account/login", {
       title: "Login",
       nav,
       errors: null,
-    })
+      account_email,
+    });
   }
-}
-
+   
+  } catch (error) {
+   return new Error('Access Forbidden')
+  }
+ }
 
 // accountCont.buildRegistration = async function (req, res, next, msj) {
 //   let nav = await utilities.getNav()
@@ -139,5 +185,15 @@ async function registerAccount(req, res) {
   }
 }
 
+async function buildAccountManagement(req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("./account/accountManagement", {
+    title: "Account Management",
+    errors: null,
+    nav,
+  })
+}
 
-  module.exports = { buildLogin, processLogin,  buildRegistration, registerAccount }
+
+
+  module.exports = { buildLogin, processLogin,  buildRegistration, registerAccount, buildAccountManagement }

@@ -38,8 +38,16 @@ router.post(
     
   )
 
+  // Route to build GET Inventory by classification in inv-management view
+  router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+
+  // Route to Edit Inventory view
+router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView));
+
+// Route to Update a vehicle
+router.post("/update/", 
+invValidate.newvehicleRules(),
+invValidate.checkUpdateData,
+utilities.handleErrors(invController.updateInventory));
 
 module.exports = router;
-// Create buildAddVehicles in inv_controller, registerVehicle
-//
-// Create validators vehicleRules(), checkvehicleData
