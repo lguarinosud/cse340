@@ -116,10 +116,23 @@
         margin-top: 0px;
       }
       
-      .inv-management a {
+      .inv-management a
+      .account-management a {
         width: 50%;
         margin: auto;
         
+      }
+
+      .inv-management ul
+      .account-management ul {
+        width: 60%;
+        margin: auto;
+      }
+
+      .account-update {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
       }
 
 

@@ -29,6 +29,9 @@ app.set("layout", "layouts/layout") // not at views root
 /* ***********************
  * Middleware
  * ************************/
+//console.log("res.locals from app.use middleware: ", app.locals);
+app.use(cookieParser())
+
 app.use(session({
   store: new (require('connect-pg-simple')(session))({
     createTableIfMissing: true,
@@ -42,7 +45,8 @@ app.use(session({
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-
+app.use(utilities.checkJWTToken)
+//console.log("res.locals from app.use middleware 2: ", app.locals);
 
 // Express Messages Middleware
 app.use(require('connect-flash')())
@@ -51,9 +55,13 @@ app.use(function(req, res, next){
   next()
 })
 
-app.use(cookieParser())
+
+//app.use(utilities.checkJWTToken)
+
 // Unit 5
-app.use(utilities.checkJWTToken)
+
+// Check login status in all the request
+//app.use(checkLoginStatus);
 
 
 /* ***********************

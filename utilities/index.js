@@ -192,6 +192,8 @@ Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)
 * Middleware to check token validity
 **************************************** */
 Util.checkJWTToken = (req, res, next) => {
+  res.locals.loggedin = 0; // Default to not logged in
+  res.locals.accountData = null; // Default to no account data
   if (req.cookies.jwt) {
    jwt.verify(
     req.cookies.jwt,
@@ -202,8 +204,21 @@ Util.checkJWTToken = (req, res, next) => {
       res.clearCookie("jwt")
       return res.redirect("/account/login")
      }
-     res.locals.accountData = accountData
+
+//account.data holds the cookie data which is
+    //  accountData: {
+    //   account_id: 30,
+    //   account_firstname: 'Manager',
+    //   account_lastname: 'User',
+    //   account_email: 'manager@340.edu',
+    //   account_type: 'Admin',
+    //   account_password: '$2a$10$pJg42fuUcnmPjIHyHpwFUOjjz48Rqrn6T9.CsWs5NdbPqmQAlz6wK'
+    // }
+     res.locals.accountData = accountData 
      res.locals.loggedin = 1
+    // For a reason still don't understand, accountdata can be call as "accountData, but loggedin needs to be "res.locals.loggedin" otherwise app will crash
+     console.log("checkJWTToken: accountData ",accountData)
+     console.log("checkJWTToken: loggedin: ",res.locals.loggedin) 
      next()
     })
   } else {
@@ -214,13 +229,65 @@ Util.checkJWTToken = (req, res, next) => {
  /* ****************************************
  *  Check Login
  * ************************************ */
- Util.checkLogin = (req, res, next) => {
-  if (res.locals.loggedin) {
-    next()
-  } else {
-    req.flash("notice", "Please log in.")
-    return res.redirect("/account/login")
+//  Util.checkLogin = (req, res, next) => {
+//   if (res.locals.loggedin) {
+//     next()
+//   } else {
+//     req.flash("notice", "Please log in.")
+//     return res.redirect("/account/login")
+//   }
+//  }
+
+ /* ****************************************
+ *  Check Login and Role
+ * ************************************ */
+Util.checkLogin = (req, res, next) => {
+  // Check if the user is logged in
+  if (!res.locals.loggedin) {
+    req.flash("notice", "Please log in.");
+    return res.redirect("/account/login");
   }
- }
+
+  else {
+    next()
+  }
+
+  // // Check if the user has the role of "Employee" or "Admin"
+  // if (res.locals.accountData.account_type === "Employee" || res.locals.accountData.account_type === "Admin") {
+  //   console.log("Permissions OK account type:", res.locals.accountData.account_type)
+  //   // User has the required role, allow them to proceed
+  //   next();
+  // } else {
+  //   // User does not have the required role, redirect them with a flash message
+  //   console.log("No permissions account type:", res.locals.accountData.account_type)
+  //   req.flash("notice", "You do not have permission to access this page.");
+  //   return res.redirect("/"); // Redirect to a suitable page
+  // }
+};
+
+/* ****************************************
+ *  Check Login and Role
+ * ************************************ */
+Util.checkEmpAdminPermissions = (req, res, next) => {
+  // Check if the user is logged in
+  if (!res.locals.loggedin) {
+    req.flash("notice", " Please log in first");
+    return res.redirect("/account/login");
+  }
+
+  // Check if the user has the role of "Employee" or "Admin"
+  if (res.locals.accountData.account_type === "Employee" || res.locals.accountData.account_type === "Admin") {
+    console.log("Permissions OK account type:", res.locals.accountData.account_type)
+    // User has the required role, allow them to proceed
+    next();
+  } else {
+    // User does not have the required role, redirect them with a flash message
+    console.log("No permissions account type:", res.locals.accountData.account_type)
+    req.flash("notice", "You do not have permission to access this page.");
+    return res.redirect("/account/login"); // Redirect to a suitable page
+  }
+};
+
+
 
 module.exports = Util

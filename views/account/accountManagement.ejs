@@ -5,10 +5,20 @@
   <%  }) %>
    </ul>
   <% } %>
-  
-  <%- messages() %>
+  <h1><%- title %> </h1>
+    <%- messages() %>
 
-  <div class="Account-Management">
+    <div class="Account-Management">
+      <h2>Welcome <%= accountData.account_firstname %></h2>
+      
+        <div class="account-management">
+          <ul>
+            <li><a href="/account/update/<%= accountData.account_id %>">Update account information</a></li>
+            <% if (accountData.account_type === 'Admin' || accountData.account_type === 'Employee') { %>
+            <li><a href="/inv/inv-management">Inventory Management</a></li>
+            <% } %>
+          </ul>
+        </div>
+     
+    </div>
     
-
-  </div>

@@ -185,7 +185,9 @@ async function registerAccount(req, res) {
   }
 }
 
+// 
 async function buildAccountManagement(req, res, next) {
+  console.log("AccountManagement controler")
   let nav = await utilities.getNav()
   res.render("./account/accountManagement", {
     title: "Account Management",
@@ -194,6 +196,149 @@ async function buildAccountManagement(req, res, next) {
   })
 }
 
+// // Check login user status. // not in used at the moment. I'm direclty checking loggedin locals variable in the view for the header
+// const checkLoginStatus = (req, res, next) => {
+//   res.locals.loggedIn = req.session.loggedin === 1;
+//   res.locals.account_firstname = req
+//   next();
+// };
 
 
-  module.exports = { buildLogin, processLogin,  buildRegistration, registerAccount, buildAccountManagement }
+// async function buildAccountUpdate(req, res, next) {
+//   console.log("AccountUpdate controler")
+//   let nav = await utilities.getNav()
+//   res.render("./account/accountUpdate", {
+//     title: "Account Update",
+//     errors: null,
+//     nav,
+//   })
+// }
+
+  async function buildAccountUpdateView(req, res, next) {
+  const account_id = parseInt(req.params.account_id)
+  console.log("buildAccountUpdateView running")
+  console.log("account_id:", account_id)
+  let nav = await utilities.getNav()
+  const itemData = await accountModel.getAccountById(account_id)
+  console.log("GetClientbyID: ", itemData)
+  const itemName = `${itemData.account_firstname} - ${itemData.account_type}`
+  res.render("./account/accountUpdate", {
+    title: "Update Account " + itemName,
+    nav,
+    errors: null,
+    account_id: itemData.account_id,
+    account_firstname: itemData.account_firstname,
+    account_lastname: itemData.account_lastname,
+    account_email: itemData.account_email,
+  })
+}
+
+/* ****************************************
+*  Update Account
+* *************************************** */
+async function updateAccount(req, res) {
+  let nav = await utilities.getNav()
+  const { 
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email,
+   } = req.body
+
+  
+  const updateResult = await accountModel.updateAccount(
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email,
+  )
+
+  if (updateResult) {
+    // req.flash create the message which then can be rendered using message() in the view
+    console.log("updateResult:", updateResult)
+    const itemName = updateResult.account_firstname + " " + updateResult.account_lastname
+    req.flash("notice", `The ${itemName} was successfully updated.`)
+    res.redirect("/account")
+    
+  } else {
+  
+    const itemName = `${account_lastname} ${account_lastname}`
+    req.flash("notice", "Sorry, the update failed.")
+    res.status(501).render("./account/accountUpdate", {
+    title: "Update " + itemName,
+    nav,
+    errors: null,
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email,
+    })
+  }
+}
+
+
+/* ****************************************
+*  Update Password
+* *************************************** */
+
+async function updatePassword(req, res) {
+  let nav = await utilities.getNav()
+  const { account_id, account_password } = req.body
+
+  // Hash the password before storing
+  let hashedPassword
+  try {
+    // regular password and cost (salt is generated automatically)
+    hashedPassword = await bcrypt.hashSync(account_password, 10)
+  } catch (error) {
+    req.flash("notice", 'Sorry, there was an error processing the password update.')
+    res.redirect(`/account/update/${account_id}`)
+    }
+  
+  
+  const regResult = await accountModel.updatePassword(
+    account_id,
+    hashedPassword,
+  )
+
+  if (regResult) {
+    // req.flash create the message which then can be rendered using message() in the view
+    req.flash(
+      "notice",
+      `Congratulations, you\'re password has been updated.`
+    )
+    res.redirect("/account/")
+  } else {
+    req.flash("notice", "Sorry, the password update failed.")
+    res.redirect(`/account/update/${account_id}`)
+      
+    }
+  }
+
+  /* ****************************************
+ *  Process logout request
+ * ************************************ */
+async function accountLogout(req, res) {
+  res.clearCookie("jwt");
+  req.flash("notice", "You've been logged out.");
+  res.redirect("/");
+}
+
+
+  
+
+
+
+
+module.exports = { buildLogin, 
+                  processLogin,  
+                  buildRegistration, 
+                   registerAccount, 
+                   buildAccountManagement,
+                   buildAccountUpdateView,
+                   updateAccount,
+                   updatePassword,
+                   accountLogout,
+                  }
+
+                  

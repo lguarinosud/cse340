@@ -12,7 +12,10 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 router.get("/detail/:inventoryId", utilities.handleErrors(invController.buildByInventoryId));
 
 // Route to build inventory management view
-router.get("/inv-management", utilities.handleErrors(invController.buildInvManagement));
+router.get("/inv-management", 
+utilities.checkLogin, 
+utilities.checkEmpAdminPermissions,
+utilities.handleErrors(invController.buildInvManagement));
 
 // Route to build GET add-Inventory view
 router.get("/add-classification", utilities.handleErrors(invController.buildAddClassification));
@@ -27,11 +30,16 @@ router.post(
   )
 
 // Route to build GET add-vehicle view
-router.get("/add-vehicle", utilities.handleErrors(invController.buildAddVehicles));
+router.get("/add-vehicle", 
+utilities.checkLogin, 
+utilities.checkEmpAdminPermissions,
+utilities.handleErrors(invController.buildAddVehicles));
 
 //Route to build POST add-vehicle view
 router.post(
     "/add-vehicle",
+    utilities.checkLogin,
+    utilities.checkEmpAdminPermissions,
     invValidate.vehicleRules(),
     invValidate.checkVehicleData,
     utilities.handleErrors(invController.registerVehicle)
@@ -42,19 +50,29 @@ router.post(
   router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
 
   // Route to Edit Inventory view
-router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView));
+router.get("/edit/:inv_id", 
+utilities.checkLogin,
+ utilities.checkEmpAdminPermissions, utilities.handleErrors(invController.editInventoryView));
 
 // Route to Update a vehicle
 router.post("/update/", 
+utilities.checkLogin,
+utilities.checkEmpAdminPermissions,
 invValidate.newvehicleRules(),
 invValidate.checkUpdateData,
 utilities.handleErrors(invController.updateInventory));
 
 // Route to Delete Inventory view
-router.get("/delete/:inv_id", utilities.handleErrors(invController.deleteInventoryView));
+router.get("/delete/:inv_id", 
+utilities.checkLogin, 
+utilities.checkEmpAdminPermissions, 
+utilities.handleErrors(invController.deleteInventoryView));
 
 // Route to Delete a vehicle 
-router.post("/delete/", utilities.handleErrors(invController.deleteInventory));
+router.post("/delete/", 
+utilities.checkLogin, 
+utilities.checkEmpAdminPermissions,
+utilities.handleErrors(invController.deleteInventory));
 
 
 module.exports = router;

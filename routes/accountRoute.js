@@ -30,13 +30,39 @@ router.post(
     utilities.handleErrors(accountController.registerAccount)
   )
 
-  // Account Management vroute view
-
+  // Account Management route view
+// NEVER PUT A CONSOLE.LOG() WHITHIN A ROUTER.GET(), IT'LL CRASH
   router.get(
       "/", 
-     utilities.checkLogin, 
-     utilities.handleErrors(accountController.buildAccountManagement))
+     utilities.checkLogin, //This will check if the user is logged in 
+     //utilities.checkEmpAdminPermissions, // Check for employee or Admin permissions
+   
+     utilities.handleErrors(accountController.buildAccountManagement)) 
 
+     //Account Update route
+router.get("/update/:account_id",
+utilities.checkLogin,
+utilities.handleErrors(accountController.buildAccountUpdateView));
+
+// Route to Update an Account POST
+router.post("/update/", 
+utilities.checkLogin,
+regValidate.accountUpdateRules(),
+regValidate.checkAccountUpdate,
+utilities.handleErrors(accountController.updateAccount));
+
+// Route to Update the password Account POST
+router.post("/update/password", 
+utilities.checkLogin,
+regValidate.accountPasswordUpdateRules(),
+regValidate.checkPasswordUpdate,
+utilities.handleErrors(accountController.updatePassword));
+
+// Route to logout a user 
+router.get("/logout", 
+utilities.handleErrors(accountController.accountLogout));
 
 
 module.exports = router;
+
+

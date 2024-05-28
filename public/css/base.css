@@ -395,11 +395,13 @@ label:required::after {
 
 /* Inventory Management */
 
-inv-management {
+.inv-management,
+.account-management {
   margin-bottom: 20px;
 }
 
-.inv-management a {
+.inv-management a,
+.account-management a {
   display: block;
   padding: 10px 20px;
   margin-bottom: 10px;
@@ -409,9 +411,16 @@ inv-management {
   border-radius: 4px;
   transition: background-color 0.3s ease;
   text-align: center;
+  
 }
 
-.inv-management a:hover {
+.inv-management li,
+.account-management li {
+  list-style-type: none;
+}
+
+.inv-management a:hover,
+.account-management a:hover {
   background-color: #0056b3;
 }
 
