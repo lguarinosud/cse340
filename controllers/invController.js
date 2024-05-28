@@ -166,7 +166,7 @@ invCont.registerVehicle = async function (req, res) {
       "notice",
       `The "${inv_make} ${inv_model}" vehicle was successfully added.`
     )
-    res.redirect("/inv/inv-management")
+    res.redirect("/inv/")
     // res.status(201).render("./inventory/inv-management", {
     //   title: "Inventory Managament",
     //   nav,
@@ -267,7 +267,7 @@ invCont.updateInventory = async function (req, res) {
     console.log("updateResult:", updateResult)
     const itemName = updateResult.inv_make + " " + updateResult.inv_model
     req.flash("notice", `The ${itemName} was successfully updated.`)
-    res.redirect("/inv/inv-management")
+    res.redirect("/inv/")
     
   } else {
     const classificationSelect = await utilities.buildClassificationList(classification_id)
@@ -324,7 +324,7 @@ invCont.deleteInventoryView = async function (req, res, next) {
   } else {
     console.log("The delete failed. inv_id:", inv_id)
     req.flash("notice", "The vehicle does not exits")
-    res.redirect("/inv/inv-management")
+    res.redirect("/inv/")
   }
 }
 
@@ -362,7 +362,7 @@ invCont.deleteInventory = async function (req, res) {
     console.log("delete succesfull")
     console.log("deleteResult:", deleteResult)
     req.flash("notice", `The ${itemName} was successfully deleted.`)
-    res.redirect("/inv/inv-management")
+    res.redirect("/inv/")
   } else {
     console.log("The delete failed. inv_id:", inv_id)
     req.flash("notice", `The ${itemName} delete failed`)
