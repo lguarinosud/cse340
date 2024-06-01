@@ -1,5 +1,5 @@
 const utilities = require(".")
-const { body, validationResult } = require("express-validator")
+const { body, query, validationResult } = require("express-validator")
 const inventoryModel = require("../models/inventory-model")
 const invModel = require("../models/inventory-model")
 const validate = {}
@@ -270,6 +270,7 @@ validate.newvehicleRules = () => {
       .withMessage("Please provide a color"), // on error this message is sent.
 
   ]
+   
 }
 
 /* ******************************
@@ -316,5 +317,54 @@ validate.checkUpdateData = async (req, res, next) => {
   console.log("Errors: ", errors)
   next()
 }
+
+/* ******************************
+ * Validation rules for search keyword
+ * ***************************** */
+
+validate.validateSearchKeyword = () => {
+  return [
+    // key_word is required, must be alphanumeric with spaces, and at least 2 characters long
+    query("key_word") // given that we are receiving the parameter from the request instead of trhe body, we need to replace query for body here. 
+      .trim()
+      .notEmpty()
+      .isLength({ min: 1 })
+      .matches(/^[A-Za-z0-9 ]+$/)
+      .withMessage("Your search failed.Only letters, numbers, and spaces are allowed, and you must enter more than one character."), // on error this message is sent.
+  ];
+};
+
+
+
+
+/* ******************************
+ * Check validation rules  and return errors or continue to next
+ * ***************************** */
+validate.searchKeywordHandler = async (req, res, next) => {
+  //const { key_word } = req.query
+  console.log("DEBUG: Received keyword:", req.query.key_word);
+  let errors = []
+  errors = validationResult(req)
+  console.log("DEBUG: Validation errors:", errors.array());
+  if (!errors.isEmpty()) {
+    const nav = await utilities.getNav()
+    const searchForm = await utilities.getSearchForm(req.query.key_word)
+    console.log("DEBUG: Rendering with errors:", errors.array());
+    //const grid = await utilities.buildClassificationGrid(result);
+    res.render("./inventory/search-result", {
+      errors,
+      title: "Find your car",
+      searchForm,
+      nav,
+      key_word: req.query.key_word,
+    })
+    return
+  }
+  console.log("Errors: ", errors)
+  next()
+}
+
+
+
 
   module.exports = validate

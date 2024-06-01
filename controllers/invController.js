@@ -370,6 +370,28 @@ invCont.deleteInventory = async function (req, res) {
   }
 }
 
+/* ***************************
+ *  Build inventory by search
+ * ************************** */
+invCont.buildByInventorySearch = async function (req, res, next) {
+  const { key_word } = req.query;
+  console.log("key_wordddddddddddddddddddddddd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!===================",key_word, req.query)
+  const searchForm = await utilities.getSearchForm(key_word)
+  const result = await invModel.searchInventory(key_word); // Pass the keyword to searchInventory
+   
+  const grid = await utilities.buildClassificationGrid(result); 
+  let nav = await utilities.getNav();
+ 
+  res.render("./inventory/search-result", {
+    title: `Search results for "${key_word}"`,
+    nav,
+    searchForm,
+    grid,
+    errors: null,
+  });
+}
+
+
 
 module.exports = invCont
 

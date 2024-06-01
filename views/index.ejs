@@ -1,12 +1,20 @@
-
+<% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+  <% } %>
+<%- messages() %>
     <div class="hero">
         <h1 class="herolabel">Welcome to CSE Motors!</h1>
-        <%- messages() %>
+        
         <picture>
             <source media="(max-width: 500px )" srcset="images/vehicles/delorean.jpg">
             <source media="(max-width: 960px )" srcset="images/vehicles/delorean.jpg">
-            <img src="images/vehicles/delorean.jpg" alt="Delorean" width="1500" height="750">
+            <img src="/images/vehicles/delorean.jpg" alt="Delorean" width="1500" height="750">
         </picture>
+        
         <div class="cta">
             <h1>DMC Delorean</h1>
             <ul>
@@ -16,8 +24,23 @@
             </ul>
             <button>Own Today!</button>
         </div>
+   
+        
             
     </div>
+    <div class="search-container">
+        <form class="search-bar" action="/inv/search" method="get">
+            <input type="search" 
+                   name="key_word" 
+                   placeholder="Search your car here..."
+                   pattern="^[A-Za-z0-9 ]{2,}$" 
+                   title="Only letters and numbers are allowed, and you must enter more than one character."
+                   required
+                   value= <%= locals.key_word%> >
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <small>*Only letters and numbers are allowed, and you must enter more than one character. You can use more than a keyword separeted by a space</small>    
 
     <div class="card">
         
@@ -35,19 +58,19 @@
                 <h1>DMC Delorean Upgrades</h1>
                 <div class="upgrades">
                     <div class="upgrade-item">
-                        <img src="images/upgrades/flux-cap.png" alt="Flux-capacitor">
+                        <img src="/images/upgrades/flux-cap.png" alt="Flux-capacitor">
                         <a href="">Flux Capacitor</a>
                     </div>
                     <div class="upgrade-item">
-                        <img src="images/upgrades/flame.jpg" alt="Flame Decals">
+                        <img src="/images/upgrades/flame.jpg" alt="Flame Decals">
                         <a href="">Flame Decals</a>
                     </div>
                     <div class="upgrade-item">
-                        <img src="images/upgrades/bumper_sticker.jpg" alt="Bumper Sticker">
+                        <img src="/images/upgrades/bumper_sticker.jpg" alt="Bumper Sticker">
                         <a href="">Bumper Sticker</a>
                     </div>
                     <div class="upgrade-item">
-                        <img src="images/upgrades/hub-cap.jpg" alt="Hub caps">
+                        <img src="/images/upgrades/hub-cap.jpg" alt="Hub caps">
                         <a href="">Hub caps</a>
                     </div>
                 </div>

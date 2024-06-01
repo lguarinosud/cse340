@@ -13,7 +13,7 @@ html, body {
 }
 
 main {
-  height: 100vh;
+  height: 100%;
 }
 
 header {
@@ -529,4 +529,52 @@ label:required::after {
 
 input:required:placeholder-shown {
   background-color: #f0f0f0;
+}
+
+/* Search bar */
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 5px;
+ 
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.search-bar input[type="search"] {
+  padding: 0.5em;
+  font-size: 1em;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+}
+
+.search-bar button {
+  padding: 0.5em 1em;
+  font-size: 1em;
+  border: 1px solid #007bff;
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+  background-color: #007bff;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  background-color: #ddd;
+}
+
+.notice {
+  color: red;
+}
+
+small {
+  display: flex;
+  justify-content: center;
 }

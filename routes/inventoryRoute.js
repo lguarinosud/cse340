@@ -25,6 +25,7 @@ router.post(
     "/add-classification",
     invValidate.classificationRules(),
     invValidate.checkClassData,
+    utilities.checkEmpAdminPermissions,
        utilities.handleErrors(invController.registerClassification)
     
   )
@@ -73,6 +74,13 @@ router.post("/delete/",
 utilities.checkLogin, 
 utilities.checkEmpAdminPermissions,
 utilities.handleErrors(invController.deleteInventory));
+
+// Route to search a vehicle 
+router.get("/search", 
+invValidate.validateSearchKeyword(),
+invValidate.searchKeywordHandler,
+utilities.handleErrors(invController.buildByInventorySearch));
+
 
 
 module.exports = router;

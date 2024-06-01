@@ -288,6 +288,26 @@ Util.checkEmpAdminPermissions = (req, res, next) => {
   }
 };
 
+Util.getSearchForm = (key_word = '') => {
+  // Define the HTML structure for the search container dynamically
+  let searchForm = `
+    <div class="search-container">
+      <form class="search-bar" action="/inv/search" method="get">
+        <input type="search"
+               name="key_word"
+               placeholder="Search your car here..."
+               pattern="^[A-Za-z0-9 ]{2,}$"
+               title="Only letters and numbers are allowed, and you must enter more than one character."
+               required
+               value="${key_word}">
+        <button type="submit">Search</button>
+      </form>
+    </div>
+    <small>*Only letters and numbers are allowed, and you must enter more than one character. You can use more than a keyword separated by a space.</small>`;
 
+    return searchForm;
+
+  
+};
 
 module.exports = Util

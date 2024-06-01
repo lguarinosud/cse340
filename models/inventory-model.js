@@ -118,6 +118,50 @@ async function deleteInventory(inv_id) {
   }
 }
 
+/* ***************************
+ *  Search in Inventory Data
+ * ************************** */
+
+async function searchInventory(keywords) {
+  // Split the keywords into an array and wrap each keyword with '%'
+  const keywordsArray = keywords.split(' ').map(keyword => `%${keyword}%`);
+
+  // Build the SQL query
+  const sql = `
+    SELECT inv.*, cls.classification_name
+    FROM inventory inv
+    JOIN classification cls ON inv.classification_id = cls.classification_id
+    WHERE 
+      inv.inv_make ILIKE ANY ($1::text[])
+      OR inv.inv_model ILIKE ANY ($1::text[])
+      OR inv.inv_year ILIKE ANY ($1::text[])
+      OR inv.inv_description ILIKE ANY ($1::text[])
+      OR inv.inv_color ILIKE ANY ($1::text[])
+      OR cls.classification_name ILIKE ANY ($1::text[]);
+  `;
+
+  try {
+    // Execute the query
+    const result = await pool.query(sql, [keywordsArray]);
+    return result.rows;
+  } catch (error) {
+    console.error('Error executing query', error);
+    throw error;
+  }
+}
+
+
+// // Example usage
+// const keywords = 'blue ford';
+// searchInventory(keywords)
+//   .then(results => {
+//     console.log('Search results:', results);
+//   })
+//   .catch(err => {
+//     console.error('Error:', err);
+//   });
+
+
 module.exports = {getClassifications, 
                   getInventoryByClassificationId, 
                   getInventoryByInventoryId, 
@@ -125,4 +169,6 @@ module.exports = {getClassifications,
                   checkExistingClassName, 
                   addNewVehicle, 
                   updateInventory,
-                  deleteInventory};
+                  deleteInventory,
+                  searchInventory,
+                };
