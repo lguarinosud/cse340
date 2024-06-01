@@ -95,7 +95,6 @@ validate.vehicleRules = () => {
     // inv_image is required and must be string
     body("inv_image")
       .trim()
-      .escape()
       .notEmpty()
       .isLength({ min: 1 })
       .withMessage("Please provide a image path"), // on error this message is sent.
@@ -103,7 +102,6 @@ validate.vehicleRules = () => {
     // inv_thumbnail is required and must be string
     body("inv_thumbnail")
       .trim()
-      .escape()
       .notEmpty()
       .isLength({ min: 1 })
       .withMessage("Please provide a thumbnail path"), // on error this message is sent.
@@ -111,7 +109,6 @@ validate.vehicleRules = () => {
     // inv_price is required and must be string
     body("inv_price")
       .trim()
-      .escape()
       .notEmpty()
       .isLength({ min: 1 })
       .withMessage("Please provide a price"), // on error this message is sent.
@@ -119,7 +116,6 @@ validate.vehicleRules = () => {
     // inv_miles is required and must be string
     body("inv_miles")
       .trim()
-      .escape()
       .notEmpty()
       .isLength({ min: 1 })
       .withMessage("Please provide milage"), // on error this message is sent.
@@ -232,7 +228,6 @@ validate.newvehicleRules = () => {
     // inv_image is required and must be string
     body("inv_image")
       .trim()
-      .escape()
       .notEmpty()
       .isLength({ min: 1 })
       .withMessage("Please provide a image path"), // on error this message is sent.
@@ -240,7 +235,6 @@ validate.newvehicleRules = () => {
     // inv_thumbnail is required and must be string
     body("inv_thumbnail")
       .trim()
-      .escape()
       .notEmpty()
       .isLength({ min: 1 })
       .withMessage("Please provide a thumbnail path"), // on error this message is sent.
@@ -256,7 +250,6 @@ validate.newvehicleRules = () => {
     // inv_miles is required and must be string
     body("inv_miles")
       .trim()
-      .escape()
       .notEmpty()
       .isLength({ min: 1 })
       .withMessage("Please provide milage"), // on error this message is sent.
